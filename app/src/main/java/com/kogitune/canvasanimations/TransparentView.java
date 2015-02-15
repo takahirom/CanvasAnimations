@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -44,7 +45,7 @@ public class TransparentView extends View {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
-        bitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.ic_android_black_48dp)).getBitmap();
+        bitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_android_black_48dp)).getBitmap();
         bitmapRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
 
         // Update TextPaint and text measurements from attributes
@@ -67,7 +68,7 @@ public class TransparentView extends View {
         paint.setAlpha(255 * percent / 100);
         canvas.drawBitmap(bitmap, bitmapRect, drawRect, paint);
 
-        invalidate();
+        ViewCompat.postInvalidateOnAnimation(this);
 
     }
 

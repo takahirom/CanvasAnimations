@@ -3,13 +3,12 @@ package com.kogitune.canvasanimations;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 
@@ -51,7 +50,7 @@ public class CropView extends View {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
-        bitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.ic_android_black_48dp)).getBitmap();
+        bitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_android_black_48dp)).getBitmap();
         bitmapRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
         bitmapHeight = bitmap.getHeight();
 
@@ -76,7 +75,7 @@ public class CropView extends View {
 
         canvas.drawBitmap(bitmap, bitmapRect, drawRect, new Paint());
 
-        invalidate();
+        ViewCompat.postInvalidateOnAnimation(this);
 
     }
 

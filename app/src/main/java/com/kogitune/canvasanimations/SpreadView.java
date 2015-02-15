@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -75,8 +76,7 @@ public class SpreadView extends View {
 
         canvas.drawBitmap(bitmap, bitmapRect, new RectF(left, top, right, bottom), new Paint());
 
-        invalidate();
-
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
 }

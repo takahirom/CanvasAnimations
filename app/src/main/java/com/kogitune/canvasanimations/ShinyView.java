@@ -9,7 +9,9 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 
@@ -50,8 +52,8 @@ public class ShinyView extends View {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
-        bitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.ic_android_black_48dp)).getBitmap();
-        maskBitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.ic_android_white_48dp)).getBitmap();
+        bitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_android_black_48dp)).getBitmap();
+        maskBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_android_white_48dp)).getBitmap();
         bitmapRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
 
         whiteLinePaint = new Paint();
@@ -77,15 +79,14 @@ public class ShinyView extends View {
         if (percent > 100) {
             percent = 0;
         }
-        float fPercent = percent/100f;
+        float fPercent = percent / 100f;
 
         canvas.drawBitmap(bitmap, bitmapRect, drawRect, new Paint());
 
         Bitmap result = createShinyBitmap(fPercent);
         canvas.drawBitmap(result, 0, 0, new Paint());
 
-        invalidate();
-
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
     private Bitmap createShinyBitmap(float fPercent) {
