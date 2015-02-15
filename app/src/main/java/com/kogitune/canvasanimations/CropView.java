@@ -2,6 +2,7 @@ package com.kogitune.canvasanimations;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -50,7 +51,7 @@ public class CropView extends View {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
-        bitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_android_black_48dp)).getBitmap();
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_android_black_48dp);
         bitmapRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
         bitmapHeight = bitmap.getHeight();
 
