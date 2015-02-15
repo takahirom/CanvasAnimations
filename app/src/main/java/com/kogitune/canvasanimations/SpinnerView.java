@@ -9,14 +9,13 @@ import android.util.AttributeSet;
 import android.view.View;
 
 
-/**
- * TODO: document your custom view class.
- */
 public class SpinnerView extends View {
     private int width;
     private int height;
     private float sweepAngle;
     private float startAngle;
+    private RectF rect;
+    private Paint paint;
 
 
     @Override
@@ -26,6 +25,7 @@ public class SpinnerView extends View {
         height = h;
         sweepAngle = 5;
         startAngle = 5;
+        invalidateTextPaintAndMeasurements();
         invalidate();
     }
 
@@ -45,28 +45,24 @@ public class SpinnerView extends View {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
-
+        paint = new Paint();
+        paint.setColor(Color.MAGENTA);
+        paint.setStrokeWidth(20);
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.STROKE);
 
         // Update TextPaint and text measurements from attributes
         invalidateTextPaintAndMeasurements();
     }
 
     private void invalidateTextPaintAndMeasurements() {
-
+        rect = new RectF(10, 10, width - 10, height - 10);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // TODO: consider storing these as member variables to reduce
-        Paint paint = new Paint();
-        paint.setColor(Color.MAGENTA);
-        paint.setStrokeWidth(20);
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.STROKE);
-        RectF rect = new RectF(50, 50, 200, 200);
-        rect = new RectF(10, 10, width - 10, height - 10);
         canvas.drawArc(rect, startAngle % 360, sweepAngle, false, paint);
 
         if (sweepAngle < 180) {
@@ -74,8 +70,8 @@ public class SpinnerView extends View {
         }
         if (startAngle < 2000) {
             startAngle *= 1.05;
-        }else{
-            startAngle += 2000*0.05;
+        } else {
+            startAngle += 2000 * 0.05;
         }
 
         invalidate();

@@ -21,6 +21,8 @@ public class ShinyView extends View {
     private Rect drawRect;
     private int percent = 0;
     private Bitmap maskBitmap;
+    private Paint whiteLinePaint;
+    private Paint maskPaint;
 
 
     @Override
@@ -52,6 +54,14 @@ public class ShinyView extends View {
         maskBitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.ic_android_white_48dp)).getBitmap();
         bitmapRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
 
+        whiteLinePaint = new Paint();
+        whiteLinePaint.setColor(Color.WHITE);
+        whiteLinePaint.setStrokeWidth(10);
+
+
+        maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        maskPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+
         // Update TextPaint and text measurements from attributes
         invalidateTextPaintAndMeasurements();
     }
@@ -67,28 +77,24 @@ public class ShinyView extends View {
         if (percent > 100) {
             percent = 0;
         }
-        canvas.drawBitmap(bitmap, bitmapRect, drawRect, new Paint());
-
         float fPercent = percent/100f;
 
-        Paint whiteLinePaint = new Paint();
-        whiteLinePaint.setColor(Color.WHITE);
-        whiteLinePaint.setStrokeWidth(10);
+        canvas.drawBitmap(bitmap, bitmapRect, drawRect, new Paint());
 
-
-        Bitmap result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas tempCanvas = new Canvas(result);
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-
-        tempCanvas.drawLine(fPercent * width, 0, 0, fPercent * height, whiteLinePaint);
-        tempCanvas.drawBitmap(maskBitmap, bitmapRect, drawRect, paint);
-        paint.setXfermode(null);
-
+        Bitmap result = createShinyBitmap(fPercent);
         canvas.drawBitmap(result, 0, 0, new Paint());
 
         invalidate();
 
+    }
+
+    private Bitmap createShinyBitmap(float fPercent) {
+        Bitmap result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas tempCanvas = new Canvas(result);
+
+        tempCanvas.drawLine(fPercent * width, 0, 0, fPercent * height, whiteLinePaint);
+        tempCanvas.drawBitmap(maskBitmap, bitmapRect, drawRect, maskPaint);
+        return result;
     }
 
 }

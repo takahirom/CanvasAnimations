@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -17,7 +18,6 @@ public class SpreadView extends View {
     private Rect bitmapRect;
     private Rect drawRect;
     private int percent = 0;
-    private int bitmapHeight;
     private Rect spreadRect;
 
 
@@ -48,7 +48,6 @@ public class SpreadView extends View {
     private void init(AttributeSet attrs, int defStyle) {
         bitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_android_black_48dp)).getBitmap();
         bitmapRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        bitmapHeight = bitmap.getHeight();
 
         // Update TextPaint and text measurements from attributes
         invalidateTextPaintAndMeasurements();
@@ -67,13 +66,14 @@ public class SpreadView extends View {
         if (percent > 100) {
             percent = 0;
         }
+        final float fPercent = percent / 100f;
 
-        final int top = (spreadRect.top * percent / 100) + drawRect.top * (100 - percent) / 100;
-        final int left = (spreadRect.left * percent / 100) + drawRect.left * (100 - percent) / 100;
-        final int right = (spreadRect.right * percent / 100) + drawRect.right * (100 - percent) / 100;
-        final int bottom = (spreadRect.bottom * percent / 100) + drawRect.bottom * (100 - percent) / 100;
+        final float top = spreadRect.top * fPercent + drawRect.top * (1 - fPercent);
+        final float left = spreadRect.left * fPercent + drawRect.left * (1 - fPercent);
+        final float right = spreadRect.right * fPercent + drawRect.right * (1 - fPercent);
+        final float bottom = spreadRect.bottom * fPercent + drawRect.bottom * (1 - fPercent);
 
-        canvas.drawBitmap(bitmap, bitmapRect, new Rect(left, top, right, bottom), new Paint());
+        canvas.drawBitmap(bitmap, bitmapRect, new RectF(left, top, right, bottom), new Paint());
 
         invalidate();
 
